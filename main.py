@@ -1,8 +1,8 @@
 from youtube_downloader import *
-LINE = '-' * 60
+LINE = '-' * 50
 def name_func(s):
     df = ' '.join(list(s))
-    print("\n" + df.center(40, "*") + "\n")
+    print("\n" + df.center(50, "*") + "\n")
 
 if __name__ == "__main__":
     print(
@@ -71,5 +71,3 @@ if __name__ == "__main__":
         else:
             print("Errore di inserimento!")
 
-# https://youtu.be/z7DbZS6l6Vk
-# https://www.youtube.com/watch?v=q3gnxO8bUxQ&list=PLYJa8mhwNlZu9SOeiKpFMhxl-M8lujScZ
