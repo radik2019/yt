@@ -11,7 +11,7 @@ def download_video(url: str, step: int=0)-> None:
         title = video.title
         stream = video.streams.filter(progressive=True, file_extension='mp4')
         stream.order_by('resolution').desc().first().download()
-        print(f"[!] '{title}' downloaded!")
+        print(f"[*] '{title}' downloaded!")
     except:
         if step < 3:
             download_video(url, step+1)
@@ -30,7 +30,7 @@ def download_audio(url: str, step: int=0)-> None:
         stream  = audio.streams.get_audio_only()
         stream.subtype='mp3'
         stream.download()
-        print(f"[!] '{titl}' downloaded!")
+        print(f"[*] '{titl}' downloaded!")
     except:
         if step < 3:
             download_audio(url, step+1)
