@@ -44,7 +44,11 @@ def download_audio(url: str, step: int=0)-> None:
 def download_audio_playlist(url: str)-> None:
 
     playlist = pytube.Playlist(url)
-    print(playlist.title.center(50, ' '))
+    title_pl = playlist.title
+    if not os.path.exists(title_pl):
+        os.mkdir(title_pl)
+    os.chdir(title_pl)
+    print(title_pl.center(50, ' '))
     print(LINE)
 
     thr = []
@@ -54,13 +58,19 @@ def download_audio_playlist(url: str)-> None:
         thr.append(t)
     for i in thr:
         i.join()
+    os.chdir("..")
+    print("playlist scaricata")
 
 
 def download_video_playlist(url: str)-> None:
     
     # links list of playlist 
     playlist = pytube.Playlist(url)
-    print(playlist.title.center(50, ' '))
+    title_pl = playlist.title
+    if not os.path.exists(title_pl):
+        os.mkdir(title_pl)
+    os.chdir(title_pl)
+    print(title_pl.center(50, ' '))
     print(LINE)
 
     # create a list for threads
@@ -75,4 +85,7 @@ def download_video_playlist(url: str)-> None:
 
     for i in thr:
         i.join()
+    os.chdir("..")
     print("playlist scaricata")
+
+
