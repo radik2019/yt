@@ -1,6 +1,18 @@
-import pytube
-import os
+import os, sys
 import threading
+
+os.system("git pull")
+if sys.platform == "linux":
+    pip = "pip3"
+else:
+    pip = "pip"
+
+try:
+    import pytube
+except ModuleNotFoundError:
+    print("import error")
+    os.system(f"{pip} install pytube")
+
 LINE = '-' * 50
 
 
