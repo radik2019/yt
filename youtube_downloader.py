@@ -71,7 +71,7 @@ def download_audio_playlist(url: str)-> None:
     for i in thr:
         i.join()
     os.chdir("..")
-    print("playlist scaricata")
+    print("[*] Playlist scaricata!")
 
 
 def download_video_playlist(url: str)-> None:
@@ -98,6 +98,5 @@ def download_video_playlist(url: str)-> None:
     for i in thr:
         i.join()
     os.chdir("..")
-    print("playlist scaricata")
-
+    print("[*] Playlist scaricata!")
 
