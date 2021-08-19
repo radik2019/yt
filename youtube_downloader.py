@@ -1,12 +1,24 @@
 import os, sys
 import threading
+import subprocess
 
-os.system("git pull")
-if sys.platform == "linux":
-    pip = "pip3"
-else:
-    pip = "pip"
 
+def check_update() ->bool:
+    # check is remote hshsumm is equal local hashsumm
+    remote_hash_rep = subprocess.run(['git',  'ls-remote', '-q', '--refs'], stdout=subprocess.PIPE, encoding='utf-8')
+    local_hash_rep = subprocess.run(['git', 'log', '-n', '1'], stdout=subprocess.PIPE, encoding='utf-8')
+    
+    remote_hash_rep = remote_hash_rep.stdout.split()[0]
+
+    return local_hash_rep.stdout.split()[1] == remote_hash_rep
+
+def update():
+    if not check_update():
+        param = input("ci sono nuovi aggiornamenti vuoi aggiornare [S \ N]: ")
+        if param.lower() == 's':
+            os.system("git pull")
+
+        
 try:
     import pytube
 except ModuleNotFoundError:

@@ -5,6 +5,7 @@ def name_func(s):
     print("\n" + df.center(50, "*") + "\n")
 
 if __name__ == "__main__":
+    update()
     print(
         "\n\nla parola 'stop' fa tornare indietro se si vuole cambiare l'idea\n\n"
         "'1' scaricare 1 video\n"
