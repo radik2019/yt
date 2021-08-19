@@ -1,50 +1,40 @@
 import os, sys
 import threading
 import subprocess
+try:
+    import pytube
+except ModuleNotFoundError:
+    print("import error")
+    os.system(f"{pip} install pytube")
+LINE = '-' * 50
+
 
 def check_update() ->bool:
     # check is remote hshsumm is equal local hashsumm
     remote_hash_rep = subprocess.run(['git',  'ls-remote', '-q', '--refs'],
         stderr=subprocess.PIPE, stdout=subprocess.PIPE, encoding='utf-8')
-    
-    print(remote_hash_rep , "\n", "= " * 30)
+
     local_hash_rep = subprocess.run(['git', 'log', '-n', '1'], stderr=subprocess.PIPE,
         stdout=subprocess.PIPE, encoding='utf-8')
-    
-    print(local_hash_rep , "\n","= " * 30)
+
     remote_hash_rep = remote_hash_rep.stdout.split()[0]
 
     return local_hash_rep.stdout.split()[1] == remote_hash_rep
+
 
 def update():
     if not check_update():
         param = input("ci sono nuovi aggiornamenti vuoi aggiornare [S \ N]: ")
         if param.lower() == 's':
 
-            process = subprocess.run(['sudo', 'ls', '-l', '-a', '/root'], stderr=subprocess.PIPE,
+            process = subprocess.run(['git', 'pull'], stderr=subprocess.PIPE,
              stdout=subprocess.DEVNULL)
-            print("= " * 30)
-            print(process.returncode)
 
             if process.returncode:
                 reset = subprocess.run(['git', 'reset', '--hard', 'HEAD'], stderr=subprocess.PIPE,
                     stdout=subprocess.DEVNULL)
                 subprocess.run(['git', 'pull'], stderr=subprocess.PIPE,
                     stdout=subprocess.DEVNULL)
-            else:
-                subprocess.run(['git', 'pull'], stderr=subprocess.PIPE,
-                    stdout=subprocess.DEVNULL)
-
-
-
-      
-try:
-    import pytube
-except ModuleNotFoundError:
-    print("import error")
-    os.system(f"{pip} install pytube")
-
-LINE = '-' * 50
 
 
 def download_video(url: str, step: int=0)-> None:
