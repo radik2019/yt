@@ -10,11 +10,20 @@ else:
 try:
     import pytube
 except ModuleNotFoundError:
+<<<<<<< HEAD
 
     print("[ ! ] Import error!")
     os.system(f"{pip} install pytube")
 
 
+=======
+    print("Import error")
+    os.system(f"{pip} install pytube")
+
+    print("import error")
+    os.system(f"{pip} install pytube")
+
+>>>>>>> b11e6e2b185b375168be679f5eee63fb04e2444b
 LINE = '-' * 50
 
 
