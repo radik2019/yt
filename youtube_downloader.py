@@ -4,14 +4,12 @@ import subprocess
 try:
     import pytube
 except ModuleNotFoundError:
-<<<<<<< HEAD
     print("Import error")
     os.system(f"{pip} install pytube")
 
-=======
     print("import error")
     os.system(f"{pip} install pytube")
->>>>>>> 8710ee7470416bc85d2bae9e4a469c04eae81a7f
+
 LINE = '-' * 50
 
 
