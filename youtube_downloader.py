@@ -1,22 +1,25 @@
 import os, sys
 import threading
 import subprocess
+
+if sys.platform == "win32":
+    pip = "pip"
+else:
+    pip = "pip3"
+
 try:
     import pytube
 except ModuleNotFoundError:
-<<<<<<< HEAD
-    print("Import error")
+
+    print("[ ! ] Import error!")
     os.system(f"{pip} install pytube")
 
-=======
-    print("import error")
-    os.system(f"{pip} install pytube")
->>>>>>> 8710ee7470416bc85d2bae9e4a469c04eae81a7f
+
 LINE = '-' * 50
 
 
 def check_update() ->bool:
-    # check is remote hshsumm is equal local hashsumm
+    # check if remote hshsumm is equal local hashsumm
     remote_hash_rep = subprocess.run(['git',  'ls-remote', '-q', '--refs'],
         stderr=subprocess.PIPE, stdout=subprocess.PIPE, encoding='utf-8')
 
@@ -29,18 +32,22 @@ def check_update() ->bool:
 
 
 def update():
-    if not check_update():
-        param = input("[ ! ] Aggiornamento disponibile!\n[ ? ] Installare [S / N]: ")
-        if param.lower() == 's':
-
-            process = subprocess.run(['git', 'pull'], stderr=subprocess.PIPE,
+    check_git = subprocess.run(['git', 'status'], stderr=subprocess.PIPE,
              stdout=subprocess.DEVNULL)
+    if not check_git:
+        if not check_update():
+            param = input("[ ⟲ ] Aggiornamento disponibile!\n[ ? ] Installare [S / N]: ")
+            if param.lower() == 's':
 
-            if process.returncode:
-                reset = subprocess.run(['git', 'reset', '--hard', 'HEAD'], stderr=subprocess.PIPE,
-                    stdout=subprocess.DEVNULL)
-                subprocess.run(['git', 'pull'], stderr=subprocess.PIPE,
-                    stdout=subprocess.DEVNULL)
+                process = subprocess.run(['git', 'pull'], stderr=subprocess.PIPE,
+                 stdout=subprocess.DEVNULL)
+
+                if process.returncode:
+                    reset = subprocess.run(['git', 'reset', '--hard', 'HEAD'], stderr=subprocess.PIPE,
+                        stdout=subprocess.DEVNULL)
+                    subprocess.run(['git', 'pull'], stderr=subprocess.PIPE,
+                        stdout=subprocess.DEVNULL)
+            print("[ * ] Programma aggiornato all'ultima versione!")
 
 
 def download_video(url: str, step: int=0)-> None:
@@ -50,7 +57,7 @@ def download_video(url: str, step: int=0)-> None:
         title = video.title
         stream = video.streams.filter(progressive=True, file_extension='mp4')
         stream.order_by('resolution').desc().first().download()
-        print(f"[*] '{title}' downloaded!")
+        print(f"[ * ] '{title}' downloaded!")
     except:
         if step < 3:
             download_video(url, step+1)
@@ -69,7 +76,7 @@ def download_audio(url: str, step: int=0)-> None:
         stream  = audio.streams.get_audio_only()
         stream.subtype='mp3'
         stream.download()
-        print(f"[*] '{titl}' downloaded!")
+        print(f"[ * ] '{titl}' downloaded!")
     except:
         if step < 3:
             download_audio(url, step+1)

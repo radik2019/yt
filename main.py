@@ -4,16 +4,22 @@ from youtube_downloader import *
 
 LINE = '-' * 50
 
+logo2 = "\n\nㄚㄖㄩㄒㄩ⻏🝗  ᗪㄖ山𝓝㇄ㄖ闩ᗪ🝗尺\n"
+
+print(logo2)
+
 
 def name_func(s):
     df = ' '.join(list(s))
     print("\n" + df.center(50, "*") + "\n")
 
+def print_down():
+    print(" [ 🡇 ] Il download sta per partire, attendere!..\n\n")
 
 if __name__ == "__main__":
     update()
     print(
-        "\n\n[ ! ] La parola 'stop' fa tornare indietro se si vuole cambiare l'idea\n\n"
+        "\n\n[ ! ] 'STOP' per tornare indietro \n\n"
         "'1' scaricare 1 video\n"
         "'2' scaricare 1 audio\n"
         "'3' scaricare una video-playlist\n"
@@ -31,6 +37,8 @@ if __name__ == "__main__":
             url = input("[ > ] Inserire link del video: ")
             if url.lower() != 'stop':
                 print(LINE)
+                print_down()
+
                 download_video(url)
             os.chdir("..")
             print(LINE)
@@ -43,6 +51,7 @@ if __name__ == "__main__":
             url = input("[ > ] Inserire link del video: ")
             if url.lower() != 'stop':
                 print(LINE)
+                print_down()
                 download_audio(url)
             os.chdir("..")
             print(LINE)
@@ -55,6 +64,7 @@ if __name__ == "__main__":
             url = input("[ > ] Inserire link della playlist video: ")
             if url.lower() != 'stop':
                 print(LINE)
+                print_down()
                 download_video_playlist(url)
             os.chdir("..")
             print(LINE)
@@ -68,6 +78,7 @@ if __name__ == "__main__":
 
             if url.lower() != 'stop':
                 print(LINE)
+                print_down()
                 download_audio_playlist(url)
             os.chdir("..")
             print(LINE)
@@ -76,5 +87,5 @@ if __name__ == "__main__":
             print("quit")
         
         else:
-            print("Errore di inserimento!")
+            print("[ ! ] Errore di inserimento!")
 
