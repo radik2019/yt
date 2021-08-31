@@ -14,16 +14,17 @@ def name_func(s):
     print("\n" + df.center(50, "*") + "\n")
 
 def print_down():
-    print(" [ 🡇 ] Il download sta per partire, attendere!..\n\n")
+    print("[ 🡇 ] Il download sta per partire, attendere!..\n\n")
 
 if __name__ == "__main__":
     update()
     print(
         "\n\n[ ! ] 'STOP' per tornare indietro \n\n"
-        "'1' scaricare 1 video\n"
-        "'2' scaricare 1 audio\n"
-        "'3' scaricare una video-playlist\n"
-        "'4' scaricare una audio-playlist\n"
+        "'reset' per resettare nel caso non scarica\n"
+        "'1'     scaricare 1 video\n"
+        "'2'     scaricare 1 audio\n"
+        "'3'     scaricare una video-playlist\n"
+        "'4'     scaricare una audio-playlist\n"
         )
     link = ''
     while link.lower().strip() != 'stop':
@@ -85,6 +86,9 @@ if __name__ == "__main__":
 
         elif link.lower().strip() == "stop":
             print("quit")
+
+        elif link.lower().strip() == "reset":
+            reset()
         
         else:
             print("[ ! ] Errore di inserimento!")

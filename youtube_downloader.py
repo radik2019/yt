@@ -2,6 +2,9 @@ import os, sys
 import threading
 import subprocess
 
+
+# pip install git+https://github.com/nficano/pytube
+
 if sys.platform == "win32":
     pip = "pip"
 else:
@@ -14,43 +17,49 @@ except ModuleNotFoundError:
     print("[ ! ] Import error!")
     os.system(f"{pip} install pytube")
 
-
 LINE = '-' * 50
 
 
-def check_update() ->bool:
+def reset():
+    # If pytube3 doesnt work:
+    # pip install git+https://github.com/nficano/pytube
+    subprocess.run([pip, 'install', 'git+https://github.com/nficano/pytube'], stderr=subprocess.PIPE,
+                                   stdout=subprocess.DEVNULL)
+
+
+def check_update() -> bool:
     # check if remote hshsumm is equal local hashsumm
-    remote_hash_rep = subprocess.run(['git',  'ls-remote', '-q', '--refs'],
-        stderr=subprocess.PIPE, stdout=subprocess.PIPE, encoding='utf-8')
+    remote_hash_rep = subprocess.run(['git', 'ls-remote', '-q', '--refs'],
+                                     stderr=subprocess.PIPE, stdout=subprocess.PIPE, encoding='utf-8')
 
     local_hash_rep = subprocess.run(['git', 'log', '-n', '1'], stderr=subprocess.PIPE,
-        stdout=subprocess.PIPE, encoding='utf-8')
+                                    stdout=subprocess.PIPE, encoding='utf-8')
 
     remote_hash_rep = remote_hash_rep.stdout.split()[0]
 
     return local_hash_rep.stdout.split()[1] == remote_hash_rep
 
 
-def update():
+def update() -> None:
     check_git = subprocess.run(['git', 'status'], stderr=subprocess.PIPE,
-             stdout=subprocess.DEVNULL)
+                               stdout=subprocess.DEVNULL)
     if not check_git:
         if not check_update():
             param = input("[ ⟲ ] Aggiornamento disponibile!\n[ ? ] Installare [S / N]: ")
             if param.lower() == 's':
 
                 process = subprocess.run(['git', 'pull'], stderr=subprocess.PIPE,
-                 stdout=subprocess.DEVNULL)
+                                         stdout=subprocess.DEVNULL)
 
                 if process.returncode:
                     reset = subprocess.run(['git', 'reset', '--hard', 'HEAD'], stderr=subprocess.PIPE,
-                        stdout=subprocess.DEVNULL)
+                                           stdout=subprocess.DEVNULL)
                     subprocess.run(['git', 'pull'], stderr=subprocess.PIPE,
-                        stdout=subprocess.DEVNULL)
+                                   stdout=subprocess.DEVNULL)
             print("[ * ] Programma aggiornato all'ultima versione!")
 
 
-def download_video(url: str, step: int=0)-> None:
+def download_video(url: str, step: int = 0) -> None:
     """download video from youtube"""
     try:
         video = pytube.YouTube(url)
@@ -58,42 +67,46 @@ def download_video(url: str, step: int=0)-> None:
         stream = video.streams.filter(progressive=True, file_extension='mp4')
         stream.order_by('resolution').desc().first().download()
         print(f"[ * ] '{title}' downloaded!")
-    except:
+    except Exception:
         if step < 3:
-            download_video(url, step+1)
+            download_video(url, step + 1)
         else:
             video = pytube.YouTube(url)
             title = video.title
-            os.remove(title + "mp4")
+            # os.remove(title + "mp4")
             print(f"[ ! ] Error! {title}")
 
 
-def download_audio(url: str, step: int=0)-> None:
+def download_audio(url: str, step: int = 0) -> None:
     """download audio track from youtube video"""
     try:
         audio = pytube.YouTube(url)
         titl = audio.title
-        stream  = audio.streams.get_audio_only()
-        stream.subtype='mp3'
+        stream = audio.streams.get_audio_only()
+        stream.subtype = 'mp3'
         stream.download()
         print(f"[ * ] '{titl}' downloaded!")
     except:
         if step < 3:
-            download_audio(url, step+1)
+            download_audio(url, step + 1)
         else:
             audio = pytube.YouTube(url)
             titl = audio.title + "mp3"
-            os.remove(titl)
+            # os.remove(titl)
             print(f"[ ! ] Error! {titl}")
 
 
-def download_audio_playlist(url: str)-> None:
 
+
+
+def download_audio_playlist(url: str) -> None:
     playlist = pytube.Playlist(url)
     title_pl = playlist.title
     if not os.path.exists(title_pl):
         os.mkdir(title_pl)
+
     os.chdir(title_pl)
+    print(os.getcwd())
     print(title_pl.center(50, ' '))
     print(LINE)
 
@@ -108,9 +121,8 @@ def download_audio_playlist(url: str)-> None:
     print("[ * ] Playlist scaricata")
 
 
-def download_video_playlist(url: str)-> None:
-    
-    # links list of playlist 
+def download_video_playlist(url: str) -> None:
+    # links list of playlist
     playlist = pytube.Playlist(url)
     title_pl = playlist.title
     if not os.path.exists(title_pl):
@@ -124,7 +136,6 @@ def download_video_playlist(url: str)-> None:
 
     # run threads
     for link in playlist:
-
         t = threading.Thread(target=download_video, args=(link,))
         t.start()
         thr.append(t)
@@ -134,4 +145,7 @@ def download_video_playlist(url: str)-> None:
     os.chdir("..")
     print("[ * ] Playlist scaricata")
 
+if __name__ == "__main__":
+    # download_video("https://youtu.be/l6N-Yq9Fw4U?list=PLrZMRV4sCvOplf_NlTAnYIioBLRC4OPXF")
+    download_video_playlist("https://www.youtube.com/playlist?list=PLYJa8mhwNlZsO8Ab3pZGYZRUGTfpE086w")
 
