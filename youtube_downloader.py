@@ -109,7 +109,7 @@ def download_audio_playlist(url: str) -> None:
     print(os.getcwd())
     print(title_pl.center(50, ' '))
     print(LINE)
-
+    len_playlist = len(playlist)
     thr = []
     for link in playlist:
         t = threading.Thread(target=download_audio, args=(link,))
@@ -117,8 +117,10 @@ def download_audio_playlist(url: str) -> None:
         thr.append(t)
     for i in thr:
         i.join()
+    len_downloaded = len(os.listdir())
+
     os.chdir("..")
-    print("[ * ] Playlist scaricata")
+    print(f"\n\n[ * ] Scaricati {len_downloaded} di {len_playlist} file audio\n\n")
 
 
 def download_video_playlist(url: str) -> None:
@@ -130,7 +132,7 @@ def download_video_playlist(url: str) -> None:
     os.chdir(title_pl)
     print(title_pl.center(50, ' '))
     print(LINE)
-
+    len_playlist = len(playlist)
     # create a list for threads
     thr = []
 
@@ -142,10 +144,10 @@ def download_video_playlist(url: str) -> None:
 
     for i in thr:
         i.join()
+    len_downloaded = len(os.listdir())
     os.chdir("..")
-    print("[ * ] Playlist scaricata")
 
-if __name__ == "__main__":
-    # download_video("https://youtu.be/l6N-Yq9Fw4U?list=PLrZMRV4sCvOplf_NlTAnYIioBLRC4OPXF")
-    download_video_playlist("https://www.youtube.com/playlist?list=PLYJa8mhwNlZsO8Ab3pZGYZRUGTfpE086w")
+    print(f"\n\n[ * ] Scaricati {len_downloaded} di {len_playlist} file video\n\n")
+
+
 

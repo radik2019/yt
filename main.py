@@ -89,6 +89,7 @@ if __name__ == "__main__":
 
         elif link.lower().strip() == "reset":
             reset()
+            print("[ * ] 'pytube' aggiornato all'ultima versione")
         
         else:
             print("[ ! ] Errore di inserimento!")
