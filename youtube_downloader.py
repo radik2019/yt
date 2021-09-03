@@ -99,9 +99,6 @@ def download_audio(url: str, step: int = 0) -> None:
             print(f"[ ! ] Error! {titl}")
 
 
-
-
-
 def download_audio_playlist(url: str) -> None:
     playlist = pytube.Playlist(url)
     title_pl = playlist.title
@@ -109,12 +106,13 @@ def download_audio_playlist(url: str) -> None:
         os.mkdir(title_pl)
 
     os.chdir(title_pl)
-    print(os.getcwd())
+
     print(title_pl.center(50, ' '))
     print(LINE)
     len_playlist = len(playlist)
     thr = []
     for link in playlist:
+
         t = threading.Thread(target=download_audio, args=(link,))
         t.start()
         thr.append(t)
@@ -123,7 +121,7 @@ def download_audio_playlist(url: str) -> None:
     len_downloaded = len(os.listdir())
 
     os.chdir("..")
-    print(f"\n\n[ * ] Scaricati {len_downloaded} di {len_playlist} file audio\n\n")
+    print(f"\n\n[ * ] Scaricati {len_downloaded} file audio su {len_playlist} \n\n")
 
 
 def download_video_playlist(url: str) -> None:
@@ -150,7 +148,7 @@ def download_video_playlist(url: str) -> None:
     len_downloaded = len(os.listdir())
     os.chdir("..")
 
-    print(f"\n\n[ * ] Scaricati {len_downloaded} di {len_playlist} file video\n\n")
+    print(f"\n\n[ * ] Scaricati {len_downloaded} file video su {len_playlist} \n\n")
 
 
 
