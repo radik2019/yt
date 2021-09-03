@@ -31,10 +31,10 @@ if __name__ == "__main__":
         link = input("[ > ] Scegli un numero da 1-4: ")
 
         if link == "1":
-            if not os.path.exists("music"):
-                os.mkdir("music")
-            os.chdir("music")
-            name_func("AUDIO")
+            if not os.path.exists("video"):
+                os.mkdir("video")
+            os.chdir("video")
+            name_func("VIDEO")
             url = input("[ > ] Inserire link del video: ")
             if url.lower() != 'stop':
                 print(LINE)
@@ -45,10 +45,10 @@ if __name__ == "__main__":
             print(LINE)
 
         elif link == "2":
-            if not os.path.exists("video"):
-                os.mkdir("video")
-            os.chdir("video")
-            name_func("VIDEO")
+            if not os.path.exists("music"):
+                os.mkdir("music")
+            os.chdir("music")
+            name_func("MUSIC")
             url = input("[ > ] Inserire link del video: ")
             if url.lower() != 'stop':
                 print(LINE)

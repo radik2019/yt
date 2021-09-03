@@ -43,7 +43,8 @@ def check_update() -> bool:
 def update() -> None:
     check_git = subprocess.run(['git', 'status'], stderr=subprocess.PIPE,
                                stdout=subprocess.DEVNULL)
-    if not check_git:
+    # se non e' installato git, non si aggiorna lapplicazione
+    if not check_git.returncode:
         if not check_update():
             param = input("[ ⟲ ] Aggiornamento disponibile!\n[ ? ] Installare [S / N]: ")
             if param.lower() == 's':
@@ -57,6 +58,8 @@ def update() -> None:
                     subprocess.run(['git', 'pull'], stderr=subprocess.PIPE,
                                    stdout=subprocess.DEVNULL)
             print("[ * ] Programma aggiornato all'ultima versione!")
+    else:
+        print("[ ! ] L'applicazione non puo' cercare aggiornamenti in automatico a causa della mancanza di 'git'")
 
 
 def download_video(url: str, step: int = 0) -> None:
