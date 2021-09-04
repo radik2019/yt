@@ -95,7 +95,7 @@ def download_audio(url: str, step: int = 0) -> None:
         else:
             audio = pytube.YouTube(url)
             titl = audio.title + "mp3"
-            # os.remove(titl)
+
             print(f"[ ! ] Error! {titl}")
 
 
