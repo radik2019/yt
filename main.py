@@ -1,7 +1,7 @@
 #!/bin/python3
 
 from youtube_downloader import *
-import json
+import json, os
 
 LINE = '-' * 50
 
@@ -30,11 +30,23 @@ def check_json(flag: str) -> str:
             d = json.load(dg)
         d[flag] = input("[ ? ] Inserisci il percorso dove vuoi che si scarichi,\n"
             "   oppure premi invio per rimanere nel percorso del programma: ")
+        if d[flag]:
+            if os.path.exists(d[flag]):
+                with open("setting.json", "w") as daf:
+                    json.dump(d, daf)
+                return d[flag]
+            else:
+                print("[ ! ] Il percorso da te scelto e' inesistente")
+                return check_json(flag)
+        else:
 
-        with open("setting.json", "w") as daf:
-            json.dump(d, daf)
-        return d[flag]
+            d[flag] = os.path.join(os.getcwd(), flag)
+            if not os.path.exists(d[flag]):
+                os.mkdir(flag)
 
+            with open("setting.json", "w") as daf:
+                json.dump(d, daf)
+            return d[flag]
 
 def name_func(s):
     df = ' '.join(list(s))
@@ -47,7 +59,7 @@ def print_down():
 
 if __name__ == "__main__":
     home = os.getcwd()
-    print(home)
+
     update()
     print(
         "\n\n[ ! ] 'STOP' per tornare indietro \n\n"
@@ -64,11 +76,6 @@ if __name__ == "__main__":
 
         if link == "1":
             dr = check_json("video")
-            if not dr:
-                if not os.path.exists("video"):
-                    os.mkdir("video")
-                    dr = "video"
-            
             os.chdir(dr)
             name_func("VIDEO")
             url = input("[ > ] Inserire link del video: ")
@@ -81,10 +88,6 @@ if __name__ == "__main__":
 
         elif link == "2":
             dr = check_json("music")
-            if not dr:
-                if not os.path.exists("music"):
-                    os.mkdir("music")
-                    dr = "music"
             os.chdir(dr)
             name_func("MUSIC")
             url = input("[ > ] Inserire link del video: ")
@@ -96,11 +99,7 @@ if __name__ == "__main__":
             print(LINE)
         
         elif link == "3":
-            dr = check_json("video")
-            if not dr:
-                if not os.path.exists("video"):
-                    os.mkdir("video")
-                    dr = "video"
+            dr = check_json("video")                    
             os.chdir(dr)
             name_func("PLAYLIST VIDEO")
             url = input("[ > ] Inserire link della playlist: ")
@@ -113,10 +112,6 @@ if __name__ == "__main__":
 
         elif link == "4":
             dr = check_json("music")
-            if not dr:
-                if not os.path.exists("music"):
-                    os.mkdir("music")
-                    dr = "music"
             os.chdir(dr)
             name_func("PLAYLIST AUDIO")
             url = input("[ > ] Inserire link della playlist: ")
