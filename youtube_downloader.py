@@ -28,16 +28,24 @@ def reset():
 
 
 def check_update() -> bool:
-    # check if remote hshsumm is equal local hashsumm
-    remote_hash_rep = subprocess.run(['git', 'ls-remote', '-q', '--refs'],
-                                     stderr=subprocess.PIPE, stdout=subprocess.PIPE, encoding='utf-8')
+    check_git = subprocess.run(['git', 'status'], stderr=subprocess.PIPE,
+                               stdout=subprocess.DEVNULL)
+    if not check_git:
 
-    local_hash_rep = subprocess.run(['git', 'log', '-n', '1'], stderr=subprocess.PIPE,
-                                    stdout=subprocess.PIPE, encoding='utf-8')
 
-    remote_hash_rep = remote_hash_rep.stdout.split()[0]
+        # check if remote hshsumm is equal local hashsumm
+        remote_hash_rep = subprocess.run(['git', 'ls-remote', '-q', '--refs'],
+                                         stderr=subprocess.PIPE, stdout=subprocess.PIPE, encoding='utf-8')
 
-    return local_hash_rep.stdout.split()[1] == remote_hash_rep
+        local_hash_rep = subprocess.run(['git', 'log', '-n', '1'], stderr=subprocess.PIPE,
+                                        stdout=subprocess.PIPE, encoding='utf-8')
+
+        remote_hash_rep = remote_hash_rep.stdout.split()[0]
+
+        return local_hash_rep.stdout.split()[1] == remote_hash_rep
+    else:
+        print("[ ! ] Il programma non potra' esssere aggiornato per la mancanza di 'git'")
+
 
 
 def update() -> None:
@@ -77,7 +85,6 @@ def download_video(url: str, step: int = 0) -> None:
         else:
             video = pytube.YouTube(url)
             title = video.title
-            # os.remove(title + "mp4")
             print(f"[ ! ] Error! {title}")
 
 
