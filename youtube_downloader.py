@@ -1,5 +1,4 @@
 import os, sys
-import threading
 import subprocess
 import multiprocessing
 
@@ -58,7 +57,8 @@ def update() -> None:
                                            stdout=subprocess.DEVNULL)
                     subprocess.run(['git', 'pull'], stderr=subprocess.PIPE,
                                    stdout=subprocess.DEVNULL)
-            print("[ * ] Programma aggiornato all'ultima versione!")
+            print("[ * ] Programma aggiornato all'ultima versione!\n")
+            print("[ ! ] Riavvia il programma per poter utilizzare l'ultima versione!\n\n")
     else:
         print("[ ! ] L'applicazione non puo' cercare aggiornamenti in automatico a causa della mancanza di 'git'")
 
