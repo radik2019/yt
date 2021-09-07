@@ -1,6 +1,7 @@
 import os, sys
 import threading
 import subprocess
+import multiprocessing
 
 
 # pip install git+https://github.com/nficano/pytube
@@ -113,7 +114,7 @@ def download_audio_playlist(url: str) -> None:
     thr = []
     for link in playlist:
 
-        t = threading.Thread(target=download_audio, args=(link,))
+        t = multiprocessing.Process(target=download_audio, args=(link,))
         t.start()
         thr.append(t)
     for i in thr:
@@ -139,7 +140,7 @@ def download_video_playlist(url: str) -> None:
 
     # run threads
     for link in playlist:
-        t = threading.Thread(target=download_video, args=(link,))
+        t = multiprocessing.Process(target=download_video, args=(link,))
         t.start()
         thr.append(t)
 
