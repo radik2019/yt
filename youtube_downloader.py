@@ -44,7 +44,8 @@ def check_update() -> bool:
 
         return local_hash_rep.stdout.split()[1] == remote_hash_rep
     else:
-        print("[ ! ] Il programma non potra' esssere aggiornato per la mancanza di 'git'")
+        
+        return 1
 
 
 
