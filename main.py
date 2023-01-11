@@ -8,11 +8,12 @@ LINE = '-' * 50
 logo2 = "\n\nㄚㄖㄩㄒㄩ⻏🝗  ᗪㄖ山𝓝㇄ㄖ闩ᗪ🝗尺\n"
 
 print(logo2)
-
+CUR_DIR = (os.path.dirname(os.path.abspath(__file__)))
+PATH_JSON_FILE = os. path.join(CUR_DIR, "setting.json")
 
 def check_json(flag: str) -> str:
     try:
-        with open("setting.json", "r") as dg:
+        with open(PATH_JSON_FILE, "r") as dg:
             d = json.load(dg)
 
             fg = d[flag]
@@ -20,19 +21,19 @@ def check_json(flag: str) -> str:
     
     except FileNotFoundError:
         dct = {}
-        with open("setting.json", 'w') as df:
+        with open(PATH_JSON_FILE, 'w') as df:
             json.dump(dct, df)
         return check_json(flag)
 
     except KeyError:
 
-        with open("setting.json", "r") as dg:
+        with open(PATH_JSON_FILE, "r") as dg:
             d = json.load(dg)
         d[flag] = input("[ ? ] Inserisci il percorso dove vuoi che si scarichi,\n"
             "   oppure premi invio per rimanere nel percorso del programma: ")
         if d[flag]:
             if os.path.exists(d[flag]):
-                with open("setting.json", "w") as daf:
+                with open(PATH_JSON_FILE, "w") as daf:
                     json.dump(d, daf)
                 return d[flag]
             else:
@@ -44,7 +45,7 @@ def check_json(flag: str) -> str:
             if not os.path.exists(d[flag]):
                 os.mkdir(flag)
 
-            with open("setting.json", "w") as daf:
+            with open(PATH_JSON_FILE, "w") as daf:
                 json.dump(d, daf)
             return d[flag]
 
@@ -61,17 +62,18 @@ if __name__ == "__main__":
     home = os.getcwd()
 
     update()
-    print(
-        "\n\n[ ! ] 'STOP' per tornare indietro \n\n"
+
+    info_help_message = ("\n\n[ ! ] 'STOP' per tornare indietro \n\n"
         "'reset' per resettare nel caso non scarica\n"
         "'1'     scaricare 1 video\n"
         "'2'     scaricare 1 audio\n"
         "'3'     scaricare una video-playlist\n"
-        "'4'     scaricare una audio-playlist\n"
-        )
+        "'4'     scaricare una audio-playlist\n")
+    
     link = ''
 
     while link.lower().strip() != 'stop':
+        print( info_help_message)
         link = input("[ > ] Scegli un numero da 1-4: ")
 
         if link == "1":
@@ -132,4 +134,5 @@ if __name__ == "__main__":
         
         else:
             print("[ ! ] Errore di inserimento!")
+            print( info_help_message)
 
